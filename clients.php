@@ -5,17 +5,28 @@
         header("Location: index.php");
     }
 
+
     include 'includes/connection.php';
     $query="SELECT * FROM `clients`";
         $result= mysqli_query($conn, $query);
+        $alertMessage="";
+        if(  isset( $_GET['alert'])=='success'){
 
-   
-        
+            if ($_GET['alert']=='success'){
+            $alertMessage="<div class='alert alert-success'>New client added! <a class='close' data-dismiss='alert'>&times;</a></div>";
+
+        }elseif ($_GET['alert']=='updatesuccess') {
+          $alertMessage="<div class='alert alert-success'>client updated! <a class='close' data-dismiss='alert'>&times;</a></div>";
+
+        }
+        }
+
     include ('includes/header.php');
     ?>
 
     <div class="container">
         <h1>Clients Address Book</h1>
+        <?php echo $alertMessage;?>
         <table class="table table-striped table-bordered">
           <tr>
               <th>Name</th>
@@ -33,10 +44,9 @@
                   echo "<tr>";
                   echo "<td>".$row['name']."</td><td>".$row['email']."</td><td>".$row['phone']."</td><td>".$row['address']."</td><td>".$row['company'].
                   "</td><td>".$row['notes']."</td>";
-                  echo '
-                <td><a href="edit.php" type="button" class="btn btn-default btn-primary btn-sm">
-                  <span class="glyphicon glyphicon-edit"></span> Edit Client</a>
-              </td>';
+
+                  echo '<td><a href="edit.php?id=',$row['id'].'" type="button" class="btn btn-default btn-primary btn-sm">
+                  <span class="glyphicon glyphicon-edit"></span> Edit Client</a></td>';
 
                   echo "</tr>";
               }
@@ -48,30 +58,28 @@
           mysqli_close($conn);
 
           ?>
-          <tr>
-              <td>Abdeoo</td>
-              <td>abdoo@honsh.com</td>
-              <td>(123)4545-5645</td>
-              <td>11 district 20 group 9 buiding 1</td>
-              <td>Kind of piza</td>
-              <td>usualy get up early</td>
-              <td><a href="edit.php" type="button" class="btn btn-default btn-primary btn-sm">
-                  <span class="glyphicon glyphicon-edit"></span> Edit Client</a>
-              </td>
-          </tr>
-          <tr>
-              <td>Abdeoo</td>
-              <td>abdoo@honsh.com</td>
-              <td>(123)4545-5645</td>
-              <td>11 district 20 group 9 buiding 1</td>
-              <td>Kind of piza</td>
-              <td>usualy get up early</td>
-              <td><a href="edit.php" type="button" class="btn btn-default btn-primary btn-sm">
-                  <span class="glyphicon glyphicon-edit"></span> Edit Client</a>
-              </td>
-          </tr>
+
         </table>
-    </div>
+
+
+<br>
+<hr>
+<style>
+.text-center {
+    text-align: center;
+}
+</style>
+<div class="container-fluid">
+  <div class="row text-center">
+     <div class="col-md-12">
+
+       <a href="add.php" type="update" class="btn btn-danger" name="add">Add Client</a>
+      </div>
+  </div>
+</div>
+
+
+
     <?php
     include('includes/footer.php');
     ?>
