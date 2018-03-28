@@ -18,6 +18,8 @@
         }elseif ($_GET['alert']=='updatesuccess') {
           $alertMessage="<div class='alert alert-success'>client updated! <a class='close' data-dismiss='alert'>&times;</a></div>";
 
+        }elseif ($_GET['alert']=='deleted') {
+          $alertMessage="<div class='alert alert-danger'>client deleted! <a class='close' data-dismiss='alert'>&times;</a></div>";
         }
         }
 

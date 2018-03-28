@@ -12,7 +12,7 @@ session_start();
         header("Location: index.php");
 
     }
-
+    $alertMessage="";
     $clientID=$_GET['id'];
     $clientName ="";
     $clientEmail = "";
@@ -91,7 +91,27 @@ session_start();
 
         }
     }
-  //  mysqli_close($conn);
+
+    if (isset($_POST['delete'])) {
+        $alertMessage="<div class='alert alert-danger'>Are you sure you wanna delete this client<br>
+        <form action='".htmlspecialchars($_SERVER["PHP_SELF"])."?id=$clientID' method='post'>
+        <input type='submit' class='btn btn-danger btn-sm' name='confirm-delete' value='yes,delete!'/>
+        <a type='button' class='btn btn-default btn-sm' data-dismiss='alert'>Oops, no thanks! </a>
+        </form>  </div>";;
+
+
+    }
+    if(isset($_POST['confirm-delete'])){
+        $query="DELETE FROM `clients` WHERE `id`='$clientID'";
+        $result= mysqli_query($conn, $query);
+        if ($result) {
+            header("Location: clients.php?alert=deleted");
+        }else {
+            
+            echo "Error updating record:".$query."<br>".mysqli_error($conn);
+        }
+    }
+    mysqli_close($conn);
 
 include 'includes/header.php';
 
@@ -100,7 +120,7 @@ include 'includes/header.php';
 
 <div class="container">
 <h1>Edit Client</h1>
-
+<?php echo $alertMessage; ?>
       <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?id=<?php echo $clientID;?>" method="post" class="row">
 
   <div class="form-group col-sm-6">
@@ -133,7 +153,7 @@ include 'includes/header.php';
               <button type="submit" class="btn btn-lg btn-danger pull-left" name="delete">Delete</button>
 
               <div class="pull-right">
-                <a hred="clients.php" type="button" class="btn-lg btn btn-default">Cancel</a>
+                <a href="clients.php" type="button" class="btn-lg btn btn-default">Cancel</a>
                 <button type="submit" class="btn btn-lg btn-success " name="update">Update</button>
               </div>
 
